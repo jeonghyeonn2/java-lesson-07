@@ -1,17 +1,19 @@
 package kr.easw.lesson07;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
- * ì´ì „ 2ê°œì˜ ì˜ˆì œì—ì„œ ì†Œê°œëœ List ì»¬ë ‰ì…˜ê³¼ ì œë„ˆë¦­ìŠ¤ë¥¼ ì´ìš©í•´ í‰ê·  ì ìˆ˜ ê³„ì‚°ê¸°ë¥¼ ë§Œë“¤ì–´ë³´ì„¸ìš”.
+ * ÀÌÀü 2°³ÀÇ ¿¹Á¦¿¡¼­ ¼Ò°³µÈ List ÄÃ·º¼Ç°ú Á¦³Ê¸¯½º¸¦ ÀÌ¿ëÇØ Æò±Õ Á¡¼ö °è»ê±â¸¦ ¸¸µé¾îº¸¼¼¿ä.
  *
- * **ë°˜ë“œì‹œ** CalculatorImpl í´ë˜ìŠ¤ë§Œ ìˆ˜ì •í•˜ì—¬ ë¬¸ì œë¥¼ í’€ì–´ì•¼ í•©ë‹ˆë‹¤.
+ * **¹İµå½Ã** CalculatorImpl Å¬·¡½º¸¸ ¼öÁ¤ÇÏ¿© ¹®Á¦¸¦ Ç®¾î¾ß ÇÕ´Ï´Ù.
  *
- * í•´ë‹¹ ë¬¸ì œëŠ” ë‹¤ìŒê³¼ ê°™ì€ ì œí•œ ì‚¬í•­ì´ ìˆìŠµë‹ˆë‹¤ :
- * - CalculatorImpl í´ë˜ìŠ¤ëŠ” Calculator ì¸í„°í˜ì´ìŠ¤ë¥¼ êµ¬í˜„í•´ì•¼ í•©ë‹ˆë‹¤.
- * - CalculatorImpl í´ë˜ìŠ¤ëŠ” Listë¥¼ ë°˜ë“œì‹œ ì‚¬ìš©í•´ì•¼ í•©ë‹ˆë‹¤.
- * - êµ¬ë™ì‹œ ì˜¤ë¥˜ê°€ ë°œìƒí•˜ì§€ ì•Šì•„ì•¼ í•©ë‹ˆë‹¤.
- * - ì…ë ¥ëœ ì ìˆ˜ê°€ ì—†ì„ ê²½ìš°, RuntimeExceptionì„ ë°œìƒì‹œì¼œì•¼ í•©ë‹ˆë‹¤.
+ * ÇØ´ç ¹®Á¦´Â ´ÙÀ½°ú °°Àº Á¦ÇÑ »çÇ×ÀÌ ÀÖ½À´Ï´Ù :
+ * - CalculatorImpl Å¬·¡½º´Â Calculator ÀÎÅÍÆäÀÌ½º¸¦ ±¸ÇöÇØ¾ß ÇÕ´Ï´Ù.
+ * - CalculatorImpl Å¬·¡½º´Â List¸¦ ¹İµå½Ã »ç¿ëÇØ¾ß ÇÕ´Ï´Ù.
+ * - ±¸µ¿½Ã ¿À·ù°¡ ¹ß»ıÇÏÁö ¾Ê¾Æ¾ß ÇÕ´Ï´Ù.
+ * - ÀÔ·ÂµÈ Á¡¼ö°¡ ¾øÀ» °æ¿ì, RuntimeExceptionÀ» ¹ß»ı½ÃÄÑ¾ß ÇÕ´Ï´Ù.
  */
 public class ScoreCalculatorWithList {
 
@@ -41,20 +43,30 @@ public class ScoreCalculatorWithList {
     }
 
     static class CalculatorImpl implements Calculator {
+        private static final List<ScoreCalculatorWithList.Score> scores = new ArrayList<>();
 
         @Override
         public void addScore(String subject, int score) {
-            throw new RuntimeException("ì´ê³³ì— ì½”ë“œë¥¼ ì‘ì„±í•˜ì„¸ìš”.");
+            scores.add(new ScoreCalculatorWithList.Score(subject,score));
         }
 
         @Override
         public double getAverage() {
-            throw new RuntimeException("ì´ê³³ì— ì½”ë“œë¥¼ ì‘ì„±í•˜ì„¸ìš”.");
+            if (scores.isEmpty()) {
+                throw new RuntimeException("ÀÔ·ÂµÈ Á¡¼ö°¡ ¾ø½À´Ï´Ù.");
+            }
+
+            int total = 0;
+            for (Score score : scores) {
+                total += score.getScore();
+            }
+
+            return (double) total / scores.size();
         }
 
         @Override
         public int getSubjectCount() {
-            throw new RuntimeException("ì´ê³³ì— ì½”ë“œë¥¼ ì‘ì„±í•˜ì„¸ìš”.");
+            return scores.size();
         }
     }
 
